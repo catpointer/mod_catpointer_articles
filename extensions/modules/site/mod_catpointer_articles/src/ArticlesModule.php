@@ -265,6 +265,10 @@ class ArticlesModule
 		$url = \ContentHelperRoute::getArticleRoute($slug, $article['catid'], $article['language']);
 
 		$article['link'] = Route::_($url);
+
+		$categoryUrl = \ContentHelperRoute::getCategoryRoute($article['catid']);
+
+		$article['category_link'] = Route::_($categoryUrl);
 	}
 
 	/**
