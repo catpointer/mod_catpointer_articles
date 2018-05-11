@@ -127,6 +127,13 @@ class ArticlesModule
 			$query->where($db->qn('a.catid') . ' IN(' . implode(',', $catIds) . ')');
 		}
 
+		$authorsIds = (array) $this->params()->get('author');
+
+		if ($authorsIds)
+		{
+			$query->where($db->qn('a.created_by') . ' IN(' . implode(',', $authorsIds) . ')');
+		}
+
 		$featuredIds = $this->featuredIds();
 
 		if ($featuredIds)
@@ -159,6 +166,22 @@ class ArticlesModule
 		}
 
 		return $articles;
+	}
+
+	/**
+	 * Identifiers of authors to show.
+	 *
+	 * @return  array
+	 */
+	protected function authorsIds()
+	{
+		return ArrayHelper::toInteger(
+			array_values(
+				array_unique(
+					array_filter((array) $this->params()->get('author'))
+				)
+			)
+		);
 	}
 
 	/**

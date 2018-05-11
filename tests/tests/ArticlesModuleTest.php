@@ -1,8 +1,8 @@
 <?php
 /**
- * Joomla! entity library.
+ * Articles Module Tests.
  *
- * @copyright  Copyright (C) 2017 Roberto Segura López, Inc. All rights reserved.
+ * @copyright  Copyright (C) 2018 catpointersolutions.com, Inc. All rights reserved.
  * @license    See COPYING.txt
  */
 
@@ -163,6 +163,23 @@ class ArticlesModuleTest extends \TestCaseDatabase
 	 *
 	 * @return void
 	 */
+	public function articlesReturnsArticlesFromSpecifiedAuthor()
+	{
+		$module = new ArticlesModule(new Registry(['author' => 2]));
+
+		$articles = $module->articles();
+
+		foreach ($articles as $article)
+		{
+			$this->assertSame('2', $article['created_by']);
+		}
+	}
+
+	/**
+	 * @test
+	 *
+	 * @return void
+	 */
 	public function articlesOnlyReturnsSpecifiedLimit()
 	{
 		$module = new ArticlesModule;
@@ -194,6 +211,39 @@ class ArticlesModuleTest extends \TestCaseDatabase
 		{
 			$this->assertSame(1, (int) $article['state']);
 		}
+	}
+
+	/**
+	 * Data provider for authorsIds test
+	 *
+	 * @return  array
+	 */
+	public function authorsIdsProvider()
+	{
+		return [
+			[['author' => '2'], [2]],
+			[['author' => ''], []],
+			[['author' => '    34'], [34]],
+			[['author' => null], []]
+		];
+	}
+
+	/**
+	 * @test
+	 *
+	 * @dataProvider  authorsIdsProvider
+	 *
+	 * @return void
+	 */
+	public function authorsIdsReturnsExpectedValues($params, $expected)
+	{
+		$module = new ArticlesModule(new Registry($params));
+
+		$reflection = new \ReflectionClass($module);
+		$method = $reflection->getMethod('authorsIds');
+		$method->setAccessible(true);
+
+		$this->assertSame($expected, $method->invoke($module));
 	}
 
 	/**

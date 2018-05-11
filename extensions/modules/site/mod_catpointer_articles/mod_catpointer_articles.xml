@@ -48,6 +48,19 @@
 					class="multipleTags"
 				/>
 				<field
+					name="author"
+					type="sql"
+					label="MOD_CATPOINTER_ARTICLES_PARAM_AUTHORS"
+					description="MOD_CATPOINTER_ARTICLES_PARAM_AUTHORS_DESC"
+					multiple="true"
+					size="5"
+					query="select id, name, username from #__users where id IN (select distinct(created_by) from #__content) order by name ASC"
+					key_field="id"
+					value_field="name"
+					>
+					<option value="">JOPTION_SELECT_AUTHORS</option>
+				</field>
+				<field
 					name="show_featured"
 					type="list"
 					label="MOD_CATPOINTER_ARTICLES_PARAM_SHOW_FEATURED"
