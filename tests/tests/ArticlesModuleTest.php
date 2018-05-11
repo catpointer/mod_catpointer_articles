@@ -9,6 +9,7 @@
 namespace Catpointer\Joomla\Module\Site\Articles\Tests;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\Registry\Registry;
 use CatPointer\Joomla\Module\Site\Articles\ArticlesModule;
 
@@ -297,5 +298,15 @@ class ArticlesModuleTest extends \TestCaseDatabase
 		$this->restoreFactoryState();
 
 		parent::tearDown();
+	}
+
+	/**
+	 * @test
+	 *
+	 * @return void
+	 */
+	public function stringsAreTranslated()
+	{
+		$this->assertSame(1, substr_count(Text::_('MOD_CATPOINTER_ARTICLES'), 'CatPointer'));
 	}
 }
