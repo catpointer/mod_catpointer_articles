@@ -38,6 +38,18 @@ class ArticlesModuleTest extends \TestCaseDatabase
 	 *
 	 * @return void
 	 */
+	public function constructorAcceptsAnArrayOfParams()
+	{
+		$module = new ArticlesModule(['test' => 'param']);
+
+		$this->assertSame('param', $module->params()->get('test'));
+	}
+
+	/**
+	 * @test
+	 *
+	 * @return void
+	 */
 	public function articlesReturnsAnArrayOfArticles()
 	{
 		$module = new ArticlesModule;
@@ -55,9 +67,7 @@ class ArticlesModuleTest extends \TestCaseDatabase
 	 */
 	public function articlesReturnsArticlesFromSpecifiedCategory()
 	{
-		$params = new Registry(['catid' => 26]);
-
-		$module = new ArticlesModule($params);
+		$module = new ArticlesModule(['catid' => 26]);
 
 		$articles = $module->articles();
 
@@ -76,9 +86,7 @@ class ArticlesModuleTest extends \TestCaseDatabase
 	 */
 	public function articlesOnlyReturnsArticlesWithTags()
 	{
-		$params = new Registry(['tag' => 2]);
-
-		$module = new ArticlesModule($params);
+		$module = new ArticlesModule(['tag' => 2]);
 
 		$articles = $module->articles();
 
@@ -92,7 +100,7 @@ class ArticlesModuleTest extends \TestCaseDatabase
 	 */
 	public function articlesOnlyReturnsFeaturedArticles()
 	{
-		$module = new ArticlesModule(new Registry(['show_featured' => ArticlesModule::FEATURED_SHOW_ONLY]));
+		$module = new ArticlesModule(['show_featured' => ArticlesModule::FEATURED_SHOW_ONLY]);
 
 		$articles = $module->articles();
 
@@ -111,7 +119,7 @@ class ArticlesModuleTest extends \TestCaseDatabase
 	 */
 	public function articlesOnlyReturnsNonFeaturedArticles()
 	{
-		$module = new ArticlesModule(new Registry(['show_featured' => ArticlesModule::FEATURED_HIDE]));
+		$module = new ArticlesModule(['show_featured' => ArticlesModule::FEATURED_HIDE]);
 
 		$articles = $module->articles();
 
@@ -130,8 +138,7 @@ class ArticlesModuleTest extends \TestCaseDatabase
 	 */
 	public function articlesReturnsFeaturedAndNonFeaturedArticles()
 	{
-		$params = new Registry(['show_featured' => ArticlesModule::FEATURED_SHOW]);
-		$module = new ArticlesModule($params);
+		$module = new ArticlesModule(['show_featured' => ArticlesModule::FEATURED_SHOW]);
 
 		$articles = $module->articles();
 
@@ -165,7 +172,7 @@ class ArticlesModuleTest extends \TestCaseDatabase
 	 */
 	public function articlesReturnsArticlesFromSpecifiedAuthor()
 	{
-		$module = new ArticlesModule(new Registry(['author' => 2]));
+		$module = new ArticlesModule(['author' => 2]);
 
 		$articles = $module->articles();
 
@@ -187,9 +194,7 @@ class ArticlesModuleTest extends \TestCaseDatabase
 		$this->assertSame(ArticlesModule::DEFAULT_LIMIT, count($module->articles()));
 		$this->assertNotSame(ArticlesModule::DEFAULT_LIMIT, 1);
 
-		$params = new Registry(['limit' => 1]);
-
-		$module = new ArticlesModule($params);
+		$module = new ArticlesModule(['limit' => 1]);
 
 		$this->assertSame(1, count($module->articles()));
 	}
@@ -237,7 +242,7 @@ class ArticlesModuleTest extends \TestCaseDatabase
 	 */
 	public function authorsIdsReturnsExpectedValues($params, $expected)
 	{
-		$module = new ArticlesModule(new Registry($params));
+		$module = new ArticlesModule($params);
 
 		$reflection = new \ReflectionClass($module);
 		$method = $reflection->getMethod('authorsIds');
@@ -271,7 +276,7 @@ class ArticlesModuleTest extends \TestCaseDatabase
 	 */
 	public function categoriesIdsReturnsCorrectValues($params, $expected)
 	{
-		$module = new ArticlesModule(new Registry($params));
+		$module = new ArticlesModule($params);
 
 		$reflection = new \ReflectionClass($module);
 		$method = $reflection->getMethod('categoriesIds');
@@ -295,11 +300,15 @@ class ArticlesModuleTest extends \TestCaseDatabase
 
 		$this->assertSame([], $method->invoke($module));
 
-		$module = new ArticlesModule(new Registry(['show_featured' => '2']));
+		$module = new ArticlesModule(['show_featured' => '2']);
 
 		$this->assertSame([0], $method->invoke($module));
 
-		$module = new ArticlesModule(new Registry(['show_featured' => '3']));
+		$module = new ArticlesModule(['show_featured' => '1']);
+
+		$this->assertSame([], $method->invoke($module));
+
+		$module = new ArticlesModule(['show_featured' => '3']);
 
 		$this->assertSame([1], $method->invoke($module));
 	}
@@ -349,7 +358,7 @@ class ArticlesModuleTest extends \TestCaseDatabase
 	 */
 	public function limitReturnsCorrectValue($params, $expectedLimit)
 	{
-		$module = new ArticlesModule(new Registry($params));
+		$module = new ArticlesModule($params);
 
 		$reflection = new \ReflectionClass($module);
 		$method = $reflection->getMethod('limit');
@@ -381,7 +390,7 @@ class ArticlesModuleTest extends \TestCaseDatabase
 	 */
 	public function orderReturnsCategoryIfPreorderCategoryIsEnabled()
 	{
-		$module = new ArticlesModule(new Registry(['preorder_category' => '1']));
+		$module = new ArticlesModule(['preorder_category' => '1']);
 
 		$reflection = new \ReflectionClass($module);
 		$method = $reflection->getMethod('order');
@@ -397,7 +406,7 @@ class ArticlesModuleTest extends \TestCaseDatabase
 	 */
 	public function renderReturnsExpectedData()
 	{
-		$module = new ArticlesModule(new Registry(['limit' => 1]));
+		$module = new ArticlesModule(['limit' => 1]);
 
 		$this->assertSame(1, substr_count($module->render(), '<ul class="articles">'));
 	}

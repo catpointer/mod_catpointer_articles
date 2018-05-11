@@ -56,11 +56,11 @@ class ArticlesModule
 	/**
 	 * Constructor.
 	 *
-	 * @param   Registry|null  $params  Module parameters
+	 * @param   Registry|array  $params  Module parameters
 	 */
-	public function __construct(Registry $params = null)
+	public function __construct($params = [])
 	{
-		$this->params = $params ?: new Registry;
+		$this->params = $params ? ($params instanceof Registry ? $params : new Registry($params)) : new Registry;
 	}
 
 	/**
