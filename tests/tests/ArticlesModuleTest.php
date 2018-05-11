@@ -27,7 +27,7 @@ class ArticlesModuleTest extends \TestCaseDatabase
 	 */
 	public function constructorSetsParams()
 	{
-		$params = new Registry(['my-param' => 'my-v	alue']);
+		$params = new Registry(['my-param' => 'my-value']);
 		$module = new ArticlesModule($params);
 
 		$this->assertSame($params, $module->params());
