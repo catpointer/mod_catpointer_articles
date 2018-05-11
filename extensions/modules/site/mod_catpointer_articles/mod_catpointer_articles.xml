@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="3.2" client="site" method="upgrade">
+	<name>MOD_CATPOINTER_ARTICLES</name>
+	<version>0.0.1</version>
+	<creationDate>May 2018</creationDate>
+	<author>catpointersolutions.com</author>
+	<authorEmail>contact@catpointersolutions.com</authorEmail>
+	<copyright>Copyright (C) 2018 catpointer.com. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<description>MOD_CATPOINTER_ARTICLES_XML_DESC</description>
+	<files>
+		<folder>language</folder>
+		<folder>src</folder>
+		<folder>tmpl</folder>
+		<folder>vendor</folder>
+		<filename>bootstrap.php</filename>
+		<filename module="mod_catpointer_articles">mod_catpointer_articles.php</filename>
+		<filename>mod_catpointer_articles.xml</filename>
+	</files>
+	<config>
+		<fields name="params">
+			<fieldset name="basic" addfieldpath="/libraries/twig/form/field">
+				<field
+					name="layout"
+					type="twig.modulelayout"
+					label="MOD_CATPOINTER_ARTICLES_PARAM_LAYOUT"
+					description="MOD_CATPOINTER_ARTICLES_PARAM_LAYOUT_DESC"
+					module="mod_catpointer_articles"
+				/>
+				<field
+					name="catid"
+					type="category"
+					label="MOD_CATPOINTER_ARTICLES_PARAM_CATEGORIES"
+					description="MOD_CATPOINTER_ARTICLES_PARAM_CATEGORIES_DESC"
+					extension="com_content"
+					multiple="true"
+					class="multipleCategories"
+					default=""
+					size="10"
+				/>
+				<field
+					name="tag"
+					type="tag"
+					label="JTAG"
+					description="JTAG_DESC"
+					mode="nested"
+					multiple="true"
+					class="multipleTags"
+				/>
+				<field
+					name="limit"
+					type="number"
+					label="MOD_CATPOINTER_ARTICLES_PARAM_LIMIT"
+					description="MOD_CATPOINTER_ARTICLES_PARAM_LIMIT_DESC"
+					default="10"
+				/>
+				<field
+					name="preorder_category"
+					type="radio"
+					label="MOD_CATPOINTER_ARTICLES_PARAM_PREORDER_CATEGORY"
+					description="MOD_CATPOINTER_ARTICLES_PARAM_PREORDER_CATEGORY_DESC"
+					class="btn-group btn-group-yesno"
+					default="0"
+					>
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field
+					name="ordering"
+					type="list"
+					label="MOD_CATPOINTER_ARTICLES_PARAM_ORDERING"
+					description="MOD_CATPOINTER_ARTICLES_PARAM_ORDERING_DESC"
+					default="a.publish_up"
+					>
+					<option value="a.title">MOD_CATPOINTER_ARTICLES_PARAM_ORDERING_OPTION_TITLE</option>
+					<option value="a.publish_up">MOD_CATPOINTER_ARTICLES_PARAM_ORDERING_OPTION_PUBLISHED_DATE</option>
+					<option value="a.created">MOD_CATPOINTER_ARTICLES_PARAM_ORDERING_OPTION_CREATED_DATE</option>
+					<option value="a.modified">MOD_CATPOINTER_ARTICLES_PARAM_ORDERING_OPTION_MODIFIED_DATE</option>
+					<option value="a.ordering">MOD_CATPOINTER_ARTICLES_PARAM_ORDERING_OPTION_ORDERING</option>
+					<option value="a.hits">JGLOBAL_HITS</option>
+					<option value="rand()">MOD_CATPOINTER_ARTICLES_PARAM_ORDERING_OPTION_RANDOM</option>
+				</field>
+
+				<field
+					name="ordering_direction"
+					type="list"
+					label="MOD_CATPOINTER_ARTICLES_PARAM_ORDERING_DIRECTION"
+					description="MOD_CATPOINTER_ARTICLES_PARAM_ORDERING_DIRECTION_DESC"
+					default="ASC"
+					>
+					<option value="ASC">JGLOBAL_ORDER_ASCENDING</option>
+					<option value="DESC">JGLOBAL_ORDER_DESCENDING</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>

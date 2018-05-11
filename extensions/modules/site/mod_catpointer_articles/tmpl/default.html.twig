@@ -1,0 +1,10 @@
+{% set articles = moduleInstance.articles() %}
+{% if articles %}
+	<ul class="articles">
+		{% for article in articles %}
+			<li>
+				<a href="{{ article['link'] | raw }}">{{ article['title'] }}</a>
+			</li>
+		{% endfor %}
+	</ul>
+{% endif %}

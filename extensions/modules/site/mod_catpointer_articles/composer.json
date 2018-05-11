@@ -1,0 +1,22 @@
+{
+  "name": "catpointer/mod_catpointer_articles",
+  "description": "Content articles module for Joomla!",
+  "keywords": ["joomla", "module", "content", "articles"],
+  "homepage": "https://github.com/catpointer/mod_catpointer_articles",
+  "license": "LGPL-2.1+",
+  "authors": [
+      {
+          "name": "Roberto Segura López",
+          "email": "roberto@phproberto.com",
+          "homepage": "http://phproberto.com"
+      }
+  ],
+  "require": {
+    "php": "^7.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "CatPointer\\Joomla\\Module\\Site\\Articles\\": "src/"
+    }
+  }
+}
