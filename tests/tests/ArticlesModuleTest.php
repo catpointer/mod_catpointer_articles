@@ -90,6 +90,79 @@ class ArticlesModuleTest extends \TestCaseDatabase
 	 *
 	 * @return void
 	 */
+	public function articlesOnlyReturnsFeaturedArticles()
+	{
+		$module = new ArticlesModule(new Registry(['show_featured' => ArticlesModule::FEATURED_SHOW_ONLY]));
+
+		$articles = $module->articles();
+
+		$this->assertNotEmpty($articles);
+
+		foreach ($articles as $article)
+		{
+			$this->assertSame('1', $article['featured']);
+		}
+	}
+
+	/**
+	 * @test
+	 *
+	 * @return void
+	 */
+	public function articlesOnlyReturnsNonFeaturedArticles()
+	{
+		$module = new ArticlesModule(new Registry(['show_featured' => ArticlesModule::FEATURED_HIDE]));
+
+		$articles = $module->articles();
+
+		$this->assertNotEmpty($articles);
+
+		foreach ($articles as $article)
+		{
+			$this->assertSame('0', $article['featured']);
+		}
+	}
+
+	/**
+	 * @test
+	 *
+	 * @return void
+	 */
+	public function articlesReturnsFeaturedAndNonFeaturedArticles()
+	{
+		$params = new Registry(['show_featured' => ArticlesModule::FEATURED_SHOW]);
+		$module = new ArticlesModule($params);
+
+		$articles = $module->articles();
+
+		$this->assertNotEmpty($articles);
+
+		$featuredFound    = false;
+		$nonFeaturedFound = false;
+
+		foreach ($articles as $article)
+		{
+			if ('0' === $article['featured'])
+			{
+				$nonFeaturedFound = true;
+				continue;
+			}
+
+			if ('1' === $article['featured'])
+			{
+				$featuredFound = true;
+			}
+		}
+
+		$this->assertTrue($featuredFound);
+		$this->assertTrue($nonFeaturedFound);
+	}
+
+	/**
+	 * @test
+	 *
+	 * @return void
+	 */
 	public function articlesOnlyReturnsSpecifiedLimit()
 	{
 		$module = new ArticlesModule;
@@ -155,6 +228,30 @@ class ArticlesModuleTest extends \TestCaseDatabase
 		$method->setAccessible(true);
 
 		$this->assertSame($expected, $method->invoke($module));
+	}
+
+	/**
+	 * @test
+	 *
+	 * @return void
+	 */
+	public function featuredIdsReturnsCorrectValue()
+	{
+		$module = new ArticlesModule;
+
+		$reflection = new \ReflectionClass($module);
+		$method = $reflection->getMethod('featuredIds');
+		$method->setAccessible(true);
+
+		$this->assertSame([], $method->invoke($module));
+
+		$module = new ArticlesModule(new Registry(['show_featured' => '2']));
+
+		$this->assertSame([0], $method->invoke($module));
+
+		$module = new ArticlesModule(new Registry(['show_featured' => '3']));
+
+		$this->assertSame([1], $method->invoke($module));
 	}
 
 	/**

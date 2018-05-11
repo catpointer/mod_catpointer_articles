@@ -33,6 +33,12 @@ class ArticlesModule
 	 */
 	const DEFAULT_LIMIT = 10;
 
+	const FEATURED_SHOW = 1;
+
+	const FEATURED_HIDE = 2;
+
+	const FEATURED_SHOW_ONLY = 3;
+
 	/**
 	 * Articles to show.
 	 *
@@ -121,6 +127,13 @@ class ArticlesModule
 			$query->where($db->qn('a.catid') . ' IN(' . implode(',', $catIds) . ')');
 		}
 
+		$featuredIds = $this->featuredIds();
+
+		if ($featuredIds)
+		{
+			$query->where($db->qn('a.featured') . ' IN(' . implode(',', $featuredIds) . ')');
+		}
+
 		$tagsIds = $this->tagsIds();
 
 		if ($tagsIds)
@@ -162,6 +175,28 @@ class ArticlesModule
 				)
 			)
 		);
+	}
+
+	/**
+	 * Retrieve the allowed featured values.
+	 *
+	 * @return  array
+	 */
+	protected function featuredIds()
+	{
+		$showFeatured = (int) $this->params()->get('show_featured', self::FEATURED_SHOW);
+
+		if (self::FEATURED_SHOW === $showFeatured)
+		{
+			return [];
+		}
+
+		if (self::FEATURED_HIDE === $showFeatured)
+		{
+			return [0];
+		}
+
+		return [1];
 	}
 
 	/**
