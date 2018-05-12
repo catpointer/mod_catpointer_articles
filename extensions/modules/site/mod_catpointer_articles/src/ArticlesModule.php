@@ -127,7 +127,7 @@ class ArticlesModule
 			$query->where($db->qn('a.catid') . ' IN(' . implode(',', $catIds) . ')');
 		}
 
-		$authorsIds = (array) $this->params()->get('author');
+		$authorsIds = $this->authorsIds();
 
 		if ($authorsIds)
 		{

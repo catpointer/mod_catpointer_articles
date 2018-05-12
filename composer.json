@@ -17,14 +17,9 @@
   "require": {
     "php": "^7.0"
   },
-  "autoload": {
-    "psr-4": {
-      "Phproberto\\Joomla\\Entity\\": "extensions/libraries/joomla_entity/src/"
-    }
-  },
   "autoload-dev": {
       "psr-4": {
-          "Phproberto\\Joomla\\Entity\\Tests\\": "tests/tests"
+          "CatPointer\\Joomla\\Module\\Site\\Articles\\Tests\\": "tests/tests"
       }
   },
   "require-dev": {
