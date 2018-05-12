@@ -124,7 +124,8 @@ class ArticlesModule
 
 		if ($catIds)
 		{
-			$query->where($db->qn('a.catid') . ' IN(' . implode(',', $catIds) . ')');
+			$in = $this->isCategoriesIncludeModeEnabled() ? 'IN' : 'NOT IN';
+			$query->where($db->qn('a.catid') . ' ' . $in . '(' . implode(',', $catIds) . ')');
 		}
 
 		$authorsIds = $this->authorsIds();
@@ -220,6 +221,16 @@ class ArticlesModule
 		}
 
 		return [1];
+	}
+
+	/**
+	 * Check if include mode is enabled for categories.
+	 *
+	 * @return  boolean
+	 */
+	public function isCategoriesIncludeModeEnabled()
+	{
+		return 'include' === $this->params()->get('categories_mode', 'include');
 	}
 
 	/**

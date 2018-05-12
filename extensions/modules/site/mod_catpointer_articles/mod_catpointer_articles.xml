@@ -28,6 +28,17 @@
 					module="mod_catpointer_articles"
 				/>
 				<field
+					name="categories_mode"
+					type="list"
+					label="MOD_CATPOINTER_ARTICLES_PARAM_CATEGORIES_MODE"
+					description="MOD_CATPOINTER_ARTICLES_PARAM_CATEGORIES_MODE_DESC"
+					class="input-xxlarge"
+					default="include"
+					>
+					<option value="include">MOD_CATPOINTER_ARTICLES_PARAM_CATEGORIES_MODE_OPTION_INCLUDE</option>
+					<option value="exclude">MOD_CATPOINTER_ARTICLES_PARAM_CATEGORIES_MODE_OPTION_EXCLUDE</option>
+				</field>
+				<field
 					name="catid"
 					type="category"
 					label="MOD_CATPOINTER_ARTICLES_PARAM_CATEGORIES"

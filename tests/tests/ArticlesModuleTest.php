@@ -117,6 +117,54 @@ class ArticlesModuleTest extends \TestCaseDatabase
 	 *
 	 * @return void
 	 */
+	public function articlesOnlyReturnsArticlesOutsideTheExcludedCategories()
+	{
+		$params = [
+			'categories_mode' => 'exclude',
+			'catid'           => [25,27]
+		];
+
+		$module = new ArticlesModule($params);
+
+		$articles = $module->articles();
+
+		$this->assertNotSame(0, count($articles));
+
+		foreach ($articles as $article)
+		{
+			$this->assertTrue(!in_array($article['catid'], $params['catid']));
+		}
+	}
+
+	/**
+	 * @test
+	 *
+	 * @return void
+	 */
+	public function articlesOnlyReturnsArticlesFromTheIncludedCategories()
+	{
+		$params = [
+			'categories_mode' => 'include',
+			'catid'           => [25,27]
+		];
+
+		$module = new ArticlesModule($params);
+
+		$articles = $module->articles();
+
+		$this->assertNotSame(0, count($articles));
+
+		foreach ($articles as $article)
+		{
+			$this->assertTrue(in_array($article['catid'], $params['catid']));
+		}
+	}
+
+	/**
+	 * @test
+	 *
+	 * @return void
+	 */
 	public function articlesOnlyReturnsNonFeaturedArticles()
 	{
 		$module = new ArticlesModule(['show_featured' => ArticlesModule::FEATURED_HIDE]);
@@ -238,6 +286,9 @@ class ArticlesModuleTest extends \TestCaseDatabase
 	 *
 	 * @dataProvider  authorsIdsProvider
 	 *
+	 * @param   array  $params    Array with params to initialise the module
+	 * @param   mixed  $expected  Expected response from method
+	 *
 	 * @return void
 	 */
 	public function authorsIdsReturnsExpectedValues($params, $expected)
@@ -246,6 +297,41 @@ class ArticlesModuleTest extends \TestCaseDatabase
 
 		$reflection = new \ReflectionClass($module);
 		$method = $reflection->getMethod('authorsIds');
+		$method->setAccessible(true);
+
+		$this->assertSame($expected, $method->invoke($module));
+	}
+
+	/**
+	 * Data provider for testing isCategoriesIncludeModeEnabled method.
+	 *
+	 * @return  boolean
+	 */
+	public function isCategoriesIncludeModeEnabledProvider()
+	{
+		return [
+			[[], true],
+			[['categories_mode' => 'exclude'], false],
+			[['categories_mode' => 'include'], true]
+		];
+	}
+
+	/**
+	 * @test
+	 *
+	 * @dataProvider  isCategoriesIncludeModeEnabledProvider
+	 *
+	 * @param   array  $params    Array with params to initialise the module
+	 * @param   mixed  $expected  Expected response from method
+	 *
+	 * @return void
+	 */
+	public function isCategoriesIncludeModeEnabledReturnsCorrectValue($params, $expected)
+	{
+		$module = new ArticlesModule($params);
+
+		$reflection = new \ReflectionClass($module);
+		$method = $reflection->getMethod('isCategoriesIncludeModeEnabled');
 		$method->setAccessible(true);
 
 		$this->assertSame($expected, $method->invoke($module));
